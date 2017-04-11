@@ -1,6 +1,6 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.jaredstevens.datafeeds</groupId>
+    <groupId>com.datafeedtoolbox.datafeeds</groupId>
     <version>1.0</version>
     <artifactId>ProcessEscapedCharacters</artifactId>
     <packaging>jar</packaging>
@@ -14,6 +14,7 @@
     <dependencies>
 
     </dependencies>
+    
     <build>
         <plugins>
             <plugin>
