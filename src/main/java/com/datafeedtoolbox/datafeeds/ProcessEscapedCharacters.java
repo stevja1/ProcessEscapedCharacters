@@ -9,7 +9,13 @@ import java.io.IOException;
  * Copyright DatafeedToolbox.com 2017 All Rights Reserved
  */
 public class ProcessEscapedCharacters {
-	public static void main(String[] args) {
+	private static final int ESCAPE = 92;
+	private static final int CARRIAGE_RETURN = 13;
+	private static final int LINEFEED = 10;
+	private static final int TAB = 9;
+	private static final int REPLACEMENT = 32;
+
+	public static void main(final String[] args) {
 		File inputFile = null;
 		if(args != null && args.length == 1) {
 			inputFile = new File(args[0]);
@@ -46,19 +52,19 @@ public class ProcessEscapedCharacters {
 				// If we find an escape character,
 				// read the next byte to see if its one of our
 				// special characters.
-				if(c1 == 92) {
+				if(c1 == ESCAPE) {
 					c2 = in.read();
 					// Let's break out of our loop if there is no next
 					// character
 					if(c2 == -1) break;
-					if(c2 == 9 || c2 == 10 || c2 == 13) {
+					if(c2 == TAB || c2 == LINEFEED || c2 == CARRIAGE_RETURN) {
 						// Oooooh. The next character is a tab or newline!
 						// Replace it with a space!
-						System.out.print((char)32);
-					} else if(c2 == 92) {
+						System.out.print((char)REPLACEMENT);
+					} else if(c2 == ESCAPE) {
 						// We found an escaped '\'.
 						// Print a single '\'.
-						System.out.print((char)92);
+						System.out.print((char)ESCAPE);
 					} else {
 						// The next character isn't anything interesting
 						// Print out the backslash character
