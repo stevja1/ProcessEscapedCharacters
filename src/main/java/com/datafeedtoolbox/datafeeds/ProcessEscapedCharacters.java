@@ -31,31 +31,43 @@ public class ProcessEscapedCharacters {
 			System.exit(3);
 		}
 
+		// Stream the data since data feeds can be large
 		FileInputStream in = null;
-
 		System.out.println("Processing file: "+inputFile);
 		try {
 			in = new FileInputStream(inputFile);
-			int c1;
-			int c2;
+			int c1, c2;
+			// Read in the first byte
 			c1 = in.read();
 			while(true) {
+				// If the file is empty, quit.
 				if(c1 == -1) break;
 
-				// If we find an escape character, read the next byte
+				// If we find an escape character,
+				// read the next byte to see if its one of our
+				// special characters.
 				if(c1 == 92) {
 					c2 = in.read();
-					// Let's break out of our loop if there is no next character
+					// Let's break out of our loop if there is no next
+					// character
 					if(c2 == -1) break;
-					// Oooooh. The next character is a tab or newline! Replace it with a space!
-					if(c2 == 9 || c2 == 10) {
+					if(c2 == 9 || c2 == 10 || c2 == 13) {
+						// Oooooh. The next character is a tab or newline!
+						// Replace it with a space!
 						System.out.print((char)32);
-					} else { // The next character isn't anything interesting
+					} else if(c2 == 92) {
+						// We found an escaped '\'.
+						// Print a single '\'.
+						System.out.print((char)92);
+					} else {
+						// The next character isn't anything interesting
 						// Print out the backslash character
 						System.out.print((char)c1);
-						// Since we've already read the next byte, let's do the following:
-						// 1. Set c1 to contain the next byte that we read
-						// 2. Skip the rest of the loop so that we don't read/print an extra byte
+						// Since we've already read the next byte,
+						// let's do the following:
+						// 1. Set c1 to c2 (the value in c2 is the next byte)
+						// 2. Skip the rest of the loop
+						//    so that we don't read/print an extra byte
 						c1 = c2;
 						continue;
 					}
